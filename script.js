@@ -3,21 +3,46 @@ document.addEventListener('DOMContentLoaded', () => {
     // 1. Smooth Scrolling & Header Interaction
     // ---------------------------------------------------------
     const header = document.querySelector('.header');
+    let lastScrollY = window.scrollY;
 
     let ticking = false;
     window.addEventListener('scroll', () => {
         if (!ticking) {
             window.requestAnimationFrame(() => {
-                if (window.scrollY > 50) {
+                const currentScrollY = window.scrollY;
+
+                // Background change logic
+                if (currentScrollY > 50) {
                     header.classList.add('scrolled');
                 } else {
                     header.classList.remove('scrolled');
                 }
+
+                // Hide/Show on scroll logic
+                if (currentScrollY > lastScrollY && currentScrollY > 100) {
+                    // Scrolling DOWN -> Hide
+                    header.classList.add('header-hidden');
+                    // Also close mobile menu if open
+                    header.classList.remove('nav-active');
+                } else {
+                    // Scrolling UP -> Show
+                    header.classList.remove('header-hidden');
+                }
+
+                lastScrollY = currentScrollY;
                 ticking = false;
             });
             ticking = true;
         }
     });
+
+    // Mobile Menu Toggle
+    const mobileMenu = document.getElementById('mobile-menu');
+    if (mobileMenu) {
+        mobileMenu.addEventListener('click', () => {
+            header.classList.toggle('nav-active');
+        });
+    }
 
     // ---------------------------------------------------------
     // 2. Scroll Animations (Intersection Observer)
@@ -455,10 +480,10 @@ document.addEventListener('DOMContentLoaded', () => {
             vec3 color = uColor * pattern;
             
             // Mix with white to keep it subtle/background-y
-            color = mix(vec3(1.0), color, 0.15); // Very subtle tint!
-
+            color = mix(vec3(1.0), color, 0.1); // Lighter, more elegant tint
+            
             /* Add some noise */
-            color -= rnd / 20.0 * uNoiseIntensity;
+            color -= rnd / 50.0 * uNoiseIntensity; // Less noise
 
             gl_FragColor = vec4(color, 1.0);
         }
@@ -475,16 +500,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // UNIFORMS & MATERIAL
-    // Brand Green: #7FAA94
-    const brandColor = hexToRGB('7FAA94');
+    // Brand Green: Deep Forest (Secondary)
+    const brandColor = hexToRGB('1F5E4A');
 
     const uniforms = {
         uTime: { value: 0 },
         uColor: { value: brandColor },
-        uSpeed: { value: 0.2 },
+        uSpeed: { value: 0.15 }, // Slightly slower
         uScale: { value: 1.0 },
         uRotation: { value: 0 },
-        uNoiseIntensity: { value: 0.2 },
+        uNoiseIntensity: { value: 0.05 }, // Smoother silk
         uResolution: { value: new THREE.Vector2(container.offsetWidth, container.offsetHeight) }
     };
 

@@ -209,6 +209,10 @@ a {
   border-bottom: 1px solid var(--color-border);
 }
 
+.header.header-hidden {
+  transform: translateY(-100%);
+}
+
 /* Standard Clean Logo */
 .logo {
   display: flex;
@@ -229,6 +233,7 @@ a {
   object-fit: contain;
   z-index: 10;
   filter: none;
+  transform: scale(1.5);
   /* simple */
 }
 
@@ -284,10 +289,27 @@ a {
   position: relative;
 }
 
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('assets/idlobg.png') no-repeat center center;
+  background-size: 130%;
+  /* background-attachment: fixed; Disable fixed for smoother layering if wanted, but user didn't specify, keeping relative to SECTION */
+  opacity: 0.8;
+  /* Adjust opacity to let silk shine through if needed, or keeping full opacity */
+  z-index: 1;
+  /* Above canvas (0), below content (2) */
+  pointer-events: none;
+}
+
 .hero-content {
   max-width: 50%;
   /* More breathing room */
-  z-index: 2;
+  z-index: 10;
   position: relative;
   padding-left: var(--space-md);
   /* Entrance Animation */
@@ -343,10 +365,11 @@ a {
   width: 80vw;
   height: 80vw;
   /* Deep Pine Green Blur */
-  background: radial-gradient(circle at center, rgba(6, 78, 59, 0.25) 0%, rgba(255, 255, 255, 0) 60%);
+  background: radial-gradient(circle at center, rgba(127, 170, 148, 0.35) 0%, rgba(255, 255, 255, 0) 65%);
   filter: blur(80px);
   opacity: 1;
   animation: pulseFresh 8s infinite ease-in-out alternate;
+  display: none;
 }
 
 .abstract-shape::after {
@@ -357,7 +380,7 @@ a {
   width: 80%;
   height: 80%;
   /* Pop of sunny yellow/orange mixed with freshness */
-  background: radial-gradient(circle at 60% 60%, rgba(252, 211, 77, 0.1) 0%, rgba(255, 255, 255, 0) 50%);
+  background: radial-gradient(circle at 60% 60%, rgba(252, 211, 77, 0.2) 0%, rgba(255, 255, 255, 0) 55%);
   border-radius: 50%;
   animation: drift 20s infinite linear;
 }
@@ -499,7 +522,7 @@ a {
     right: auto;
     transform: none;
     width: 100%;
-    height: 55vh;
+    height: 65vh;
     /* Increased height for spacing */
     margin-top: 0rem;
     margin-bottom: 2rem;
@@ -513,13 +536,13 @@ a {
 
   .wrapper-ragi {
     width: 60%;
-    top: 25%;
+    top: 15%;
     left: -5%;
     right: auto;
   }
 
   .wrapper-ice {
-    width: 55%;
+    width: 65%;
     top: auto;
     bottom: 0%;
     left: -5%;
@@ -889,40 +912,117 @@ a {
     text-align: center;
   }
 
-  /* Header */
+  /* Header - Keep Row Layout */
   .header {
-    padding: 1rem;
-    flex-direction: column;
-    gap: 1rem;
-    background: transparent;
-    backdrop-filter: none;
+    padding: 45px 30px;
+    flex-direction: row;
+    position: fixed;
+    /* Must be fixed for sticky hide/show */
+    /* Context for absolute nav */
+    justify-content: space-between;
+    align-items: center;
+    gap: 0;
+    transition: all 0.4s ease;
+    /* Smooth transition for background */
+  }
+
+  /* Ensure solid background when menu is open */
+  .header.nav-active {
+    background-color: var(--color-bg);
+    border-bottom: 1px solid var(--color-border);
   }
 
   .header.scrolled {
-    padding: 0.8rem 1rem;
-    background: var(--glass-bg);
-    backdrop-filter: var(--glass-blur);
+    padding: 15px 25px;
   }
 
   .logo {
     margin-right: 0;
-    justify-content: center;
-    width: 100%;
+    width: auto;
+    justify-content: flex-start;
+    flex-shrink: 0;
+    /* Prevent logo crushing */
   }
 
   .logo-img {
-    height: 60px;
-    /* Smaller on mobile */
+    height: 50px;
+    /* Small layout size */
+    transform: scale(2.0);
+    /* Big visual size */
+    transform-origin: left center;
+    /* Grow rightwards */
+    margin-left: 10px;
+    /* Compensation for scale if needed, or just let it be */
   }
 
-  .nav {
+  /* New Menu Toggle Button */
+  .menu-toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 21px;
+    cursor: pointer;
+    z-index: 1001;
+    /* Above everything */
+  }
+
+  .menu-toggle .bar {
     width: 100%;
+    height: 3px;
+    background-color: var(--color-text);
+    border-radius: 10px;
+    transition: all 0.3s ease;
+  }
+
+  /* Active Menu State (X Shape) */
+  .header.nav-active .bar:nth-child(1) {
+    transform: translateY(9px) rotate(45deg);
+  }
+
+  .header.nav-active .bar:nth-child(2) {
+    opacity: 0;
+  }
+
+  .header.nav-active .bar:nth-child(3) {
+    transform: translateY(-9px) rotate(-45deg);
+  }
+
+  /* Nav Drawer */
+  .nav {
+    position: absolute;
+    top: 100%;
+    /* Below header */
+    left: 0;
+    width: 100%;
+    height: 0;
+    overflow: hidden;
+    background: var(--color-bg);
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
-    gap: 20px;
+    gap: 30px;
+    transition: height 0.4s cubic-bezier(0.16, 1, 0.3, 1), padding 0.4s ease;
+    padding: 0;
+    opacity: 0;
+    border-bottom: 1px solid var(--color-border);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  }
+
+  .header.nav-active .nav {
+    height: 350px;
+    /* Expand height */
+    padding: 40px 0;
+    opacity: 1;
   }
 
   .nav a {
-    font-size: 0.9rem;
+    font-size: 1.1rem;
+    /* Slightly larger than desktop for mobile touch targets */
+    font-family: var(--font-body);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
   }
 
 
@@ -937,6 +1037,12 @@ a {
     justify-content: center;
     text-align: center;
     align-items: center;
+  }
+
+  /* Mobile Background: Rotate 90deg */
+  .hero::before {
+    transform: rotate(90deg) scale(2.5);
+    background-size: contain;
   }
 
   .hero-content {
