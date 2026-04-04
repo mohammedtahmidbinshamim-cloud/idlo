@@ -201,12 +201,32 @@ a {
   background: transparent;
 }
 
+.header::before {
+  content: '';
+  position: absolute;
+  top: 30px;
+  left: 0;
+  width: 320px;
+  height: calc(100% - 60px);
+  background: #FFFFFF;
+  z-index: -1;
+  transition: all 0.4s ease;
+  border-radius: 0 60px 60px 0;
+}
+
 .header.scrolled {
   padding: var(--space-sm) var(--space-lg);
+  background: transparent;
+}
+
+.header.scrolled::before {
+  top: 0;
+  height: 100%;
+  width: 100%;
   background: rgba(255, 255, 255, 0.95);
-  /* Solid White Glass */
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--color-border);
+  border-radius: 0;
 }
 
 .header.header-hidden {
@@ -284,27 +304,12 @@ a {
   text-align: left;
   /* Left align for editorial look */
   overflow: hidden;
-  /* Clean White Background fallback */
-  background: #FFFFFF;
+  /* Matched from Idly/Dosa Batter product card */
+  background: #CFE8D6;
   position: relative;
 }
 
-.hero::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: url('assets/idlobg.png') no-repeat center center;
-  background-size: 130%;
-  /* background-attachment: fixed; Disable fixed for smoother layering if wanted, but user didn't specify, keeping relative to SECTION */
-  opacity: 0.8;
-  /* Adjust opacity to let silk shine through if needed, or keeping full opacity */
-  z-index: 1;
-  /* Above canvas (0), below content (2) */
-  pointer-events: none;
-}
+
 
 .hero-content {
   max-width: 50%;
@@ -620,19 +625,81 @@ a {
   box-shadow: var(--shadow-sm);
 }
 
+.carousel-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.carousel-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  box-shadow: var(--shadow-sm);
+  color: var(--color-text);
+  font-size: 1.2rem;
+  transition: all var(--transition-fast);
+}
+
+.carousel-nav-btn:hover {
+  background: var(--color-text);
+  color: var(--color-white);
+  box-shadow: var(--shadow-md);
+}
+
+.carousel-nav-btn.prev {
+  left: -24px;
+}
+
+.carousel-nav-btn.next {
+  right: -24px;
+}
+
 .product-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-  gap: var(--space-md);
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  gap: 15vw;
+  padding: 20px calc(50% - 170px); /* Centers a 340px card perfectly */
+  scrollbar-width: none;
+  width: 100%;
+}
+.product-grid::-webkit-scrollbar {
+  display: none;
 }
 
 .product-card {
+  flex: 0 0 340px;
+  min-width: 0;
+  scroll-snap-align: center;
   background: var(--color-white);
   border-radius: 24px;
-  /* Even rounder */
   overflow: hidden;
-  transition: transform var(--transition-bounce), box-shadow var(--transition-bounce);
+  opacity: 0.4 !important; /* Peeking slides are softly faded */
+  transform: scale(0.85) !important; /* Make peeking products smaller */
+  transition: opacity 0.5s ease, transform var(--transition-bounce), box-shadow var(--transition-bounce) !important;
   border: 1px solid var(--color-border);
+}
+
+.product-card.focused {
+  opacity: 1 !important; /* The single fully visible center slide */
+  transform: scale(1) !important; /* Center slide holds full dominance */
+}
+
+.product-card.focused:hover {
+  transform: scale(1) translateY(-8px) !important; /* Smooth hover for centered slide */
 }
 
 .product-grid article:nth-child(3) .product-image {
@@ -926,14 +993,30 @@ a {
     /* Smooth transition for background */
   }
 
+  .header::before {
+    width: 200px;
+  }
+
   /* Ensure solid background when menu is open */
   .header.nav-active {
+    background-color: transparent;
+  }
+
+  .header.nav-active::before {
+    top: 0;
+    height: 100%;
+    width: 100%;
     background-color: var(--color-bg);
     border-bottom: 1px solid var(--color-border);
+    border-radius: 0;
   }
 
   .header.scrolled {
     padding: 15px 25px;
+  }
+
+  .header.scrolled::before {
+    width: 100%;
   }
 
   .logo {
@@ -1039,11 +1122,7 @@ a {
     align-items: center;
   }
 
-  /* Mobile Background: Rotate 90deg */
-  .hero::before {
-    transform: rotate(90deg) scale(2.5);
-    background-size: contain;
-  }
+
 
   .hero-content {
     max-width: 100%;
@@ -1094,10 +1173,30 @@ a {
   }
 
   /* Products */
+  .carousel-nav-btn {
+    display: flex; /* Show buttons on mobile */
+    width: 44px;
+    height: 44px;
+    font-size: 1.1rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
+  }
+  
+  .carousel-nav-btn.prev {
+    left: -5px; 
+  }
+
+  .carousel-nav-btn.next {
+    right: -5px;
+  }
+  
   .product-grid {
-    grid-template-columns: 1fr;
-    /* Single column */
-    padding: 0 10px;
+    padding: 20px 10vw; /* Centers an 80vw card within the mobile view */
+    gap: 15vw;
+  }
+  
+  .product-card {
+    flex: 0 0 80vw;
+    min-width: 0;
   }
 
   .product-card:hover {

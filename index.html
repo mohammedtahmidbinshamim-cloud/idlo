@@ -35,8 +35,6 @@
 
     <main>
         <section class="hero">
-            <div class="abstract-shape"></div>
-            <div id="canvas-container"></div>
             <div class="hero-content">
                 <h1 class="hero-title">Pure Taste.<br><span>Naturally Fresh.</span></h1>
                 <p class="hero-subtitle">Experience the vibrant art of premium ingredients, sourced with integrity from
@@ -72,70 +70,78 @@
                 </div>
             </div>
 
-            <div class="product-grid">
-                <!-- Product 1: Dosa Batter -->
-                <article class="product-card" data-back-image="assets/dosabatterbackbg.png">
-                    <div class="product-image-container" style="background-color: #CFE8D6;">
-                        <div class="product-image"
-                            style="background-image: url('assets/dosabatterfrontbg.png'); background-size: contain; background-repeat: no-repeat;">
+            <div class="carousel-wrapper">
+                <button class="carousel-nav-btn prev" aria-label="Previous Products">&#10094;</button>
+                <div class="product-grid data-carousel">
+                    <!-- Product 1: Dosa Batter -->
+                    <article class="product-card" data-back-image="assets/dosabatterbackbg.png"
+                        data-full-desc="Idlo Fresh Idli &amp; Dosa Batter is crafted in a professionally managed, hygienic production facility using carefully sourced rice and premium urad dal. Prepared through controlled grinding and natural fermentation, the batter achieves optimal texture, balanced flavor, and consistent performance.<br><br>Engineered for versatility, it delivers soft, fluffy idlis and perfectly crisp dosas with dependable results. Every batch undergoes quality checks and is securely packed to preserve freshness and integrity.<br><br>Ideal for both household kitchens and bulk supply requirements, Idlo Idli &amp; Dosa Batter represents precision, reliability, and everyday convenience.">
+                        <div class="product-image-container" style="background-color: #CFE8D6;">
+                            <div class="product-image"
+                                style="background-image: url('assets/dosabatterfrontbg.png'); background-size: contain; background-repeat: no-repeat;">
+                            </div>
+                            <div class="product-overlay">
+                                <p>Authentic stone-ground fermentation.</p>
+                            </div>
                         </div>
-                        <div class="product-overlay">
-                            <p>Authentic stone-ground fermentation.</p>
+                        <div class="product-info">
+                            <h3>Idly & Dosa Batter</h3>
+                            <span class="category">Batters</span>
                         </div>
-                    </div>
-                    <div class="product-info">
-                        <h3>Idly & Dosa Batter</h3>
-                        <span class="category">Batters</span>
-                    </div>
-                </article>
+                    </article>
 
-                <!-- Product 2: Ragi Batter -->
-                <article class="product-card" data-back-image="assets/ragibatterbackbg.png">
-                    <div class="product-image-container" style="background-color: #E6D0CC;">
-                        <div class="product-image"
-                            style="background-image: url('assets/ragibatterfrontbg.png'); background-size: contain; background-repeat: no-repeat;">
+                    <!-- Product 2: Ragi Batter -->
+                    <article class="product-card" data-back-image="assets/ragibatterbackbg.png"
+                        data-full-desc="Idlo Fresh Ragi Millet Idli &amp; Dosa Batter is formulated using quality-assured ragi millet blended with carefully selected ingredients to achieve balanced taste and texture. Produced in a hygienic, professionally managed facility, the batter undergoes controlled grinding and natural fermentation to ensure uniform consistency and dependable results.<br><br>Rich in natural nutrients and dietary fiber, this batter is designed for soft ragi idlis and crisp millet dosas without compromising on flavor. Each batch is quality-checked and securely packed to maintain freshness and performance.<br><br>Suitable for health-conscious households and bulk supply requirements, Idlo Ragi Millet Batter combines nutrition, precision, and reliability in every pack.">
+                        <div class="product-image-container" style="background-color: #E6D0CC;">
+                            <div class="product-image"
+                                style="background-image: url('assets/ragibatterfrontbg.png'); background-size: contain; background-repeat: no-repeat;">
+                            </div>
+                            <div class="product-overlay">
+                                <p>Rich in calcium and fiber.</p>
+                            </div>
                         </div>
-                        <div class="product-overlay">
-                            <p>Rich in calcium and fiber.</p>
+                        <div class="product-info">
+                            <h3>Ragi Millet Idly & Dosa Batter</h3>
+                            <span class="category">Batters</span>
                         </div>
-                    </div>
-                    <div class="product-info">
-                        <h3>Ragi Millet Idly & Dosa Batter</h3>
-                        <span class="category">Batters</span>
-                    </div>
-                </article>
+                    </article>
 
-                <!-- Product 3: Appam Batter -->
-                <article class="product-card" data-back-image="assets/appambatterfrontbg.png">
-                    <div class="product-image-container" style="background-color: #D9F2E6;">
-                        <div class="product-image"
-                            style="background-image: url('assets/appambatterfrontbg.png'); background-size: contain; background-repeat: no-repeat;">
+                    <!-- Product 3: Appam Batter -->
+                    <article class="product-card" data-back-image="assets/appambatterfrontbg.png"
+                        data-full-desc="Idlo Fresh Appam Batter is crafted using carefully selected rice and traditional ingredients, processed in a hygienic, professionally managed facility. Prepared through controlled grinding and natural fermentation, the batter achieves the ideal light texture and balanced flavor required for authentic appams.<br><br>Designed to deliver soft centers with delicate, lacy edges, the batter ensures consistent results with every preparation. Each batch undergoes strict quality checks and is securely packed to preserve freshness and performance.<br><br>Suitable for households and commercial kitchens alike, Idlo Appam Batter offers reliability, convenience, and authentic taste in every pack.">
+                        <div class="product-image-container" style="background-color: #D9F2E6;">
+                            <div class="product-image"
+                                style="background-image: url('assets/appambatterfrontbg.png'); background-size: contain; background-repeat: no-repeat;">
+                            </div>
+                            <div class="product-overlay">
+                                <p>Soft, fluffy hoppers every time.</p>
+                            </div>
                         </div>
-                        <div class="product-overlay">
-                            <p>Soft, fluffy hoppers every time.</p>
+                        <div class="product-info">
+                            <h3>Appam Batter</h3>
+                            <span class="category">Batters</span>
                         </div>
-                    </div>
-                    <div class="product-info">
-                        <h3>Appam Batter</h3>
-                        <span class="category">Batters</span>
-                    </div>
-                </article>
+                    </article>
 
-                <!-- Product 4: Fresh Ice Cubes -->
-                <article class="product-card" data-back-image="assets/icecubesbackbg.png">
-                    <div class="product-image-container" style="background-color: #CCEEFF;">
-                        <div class="product-image"
-                            style="background-image: url('assets/icecubesfrontbg.png'); background-size: contain; background-repeat: no-repeat;">
+                    <!-- Product 4: Fresh Ice Cubes -->
+                    <article class="product-card" data-back-image="assets/icecubesbackbg.png"
+                        data-full-desc="Idlo Fresh Ice Cubes are produced using purified water in a hygienic, controlled environment with standardized processing methods. Manufactured using modern equipment and handled under strict quality protocols, each batch ensures clarity, safety, and uniform size.<br><br>Designed for everyday use, events, and commercial requirements, Idlo Ice Cubes offer clean presentation and reliable performance in beverages and food applications.<br><br>Carefully processed. Hygienically packed. Consistently dependable.">
+                        <div class="product-image-container" style="background-color: #CCEEFF;">
+                            <div class="product-image"
+                                style="background-image: url('assets/icecubesfrontbg.png'); background-size: contain; background-repeat: no-repeat;">
+                            </div>
+                            <div class="product-overlay">
+                                <p>Crystal clear purity.</p>
+                            </div>
                         </div>
-                        <div class="product-overlay">
-                            <p>Crystal clear purity.</p>
+                        <div class="product-info">
+                            <h3>Ice Cubes</h3>
+                            <span class="category">Essentials</span>
                         </div>
-                    </div>
-                    <div class="product-info">
-                        <h3>Ice Cubes</h3>
-                        <span class="category">Essentials</span>
-                    </div>
-                </article>
+                    </article>
+                </div>
+                <button class="carousel-nav-btn next" aria-label="Next Products">&#10095;</button>
             </div>
         </section>
 
@@ -188,8 +194,6 @@
         </div>
     </footer>
 
-    <!-- Three.js for Hero Background -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="script.js"></script>
 </body>
 

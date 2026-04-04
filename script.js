@@ -341,8 +341,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const backImgRaw = card.getAttribute('data-back-image');
             currentBackImg = backImgRaw ? `url('${backImgRaw}')` : currentFrontImg; // Fallback to front if missing
 
+            const customDesc = card.getAttribute('data-full-desc');
+
             modalTitle.innerText = title;
-            modalDesc.innerText = `${desc} Experience the finest quality sourced directly from sustainable farms. Our ${title} represents the pinnacle of culinary excellence.`;
+            if (customDesc) {
+                modalDesc.innerHTML = customDesc;
+            } else {
+                modalDesc.innerText = `${desc} Experience the finest quality sourced directly from sustainable farms. Our ${title} represents the pinnacle of culinary excellence.`;
+            }
 
             // Apply styles to modal image
             modalImg.style.backgroundColor = bg;
@@ -388,159 +394,44 @@ document.addEventListener('DOMContentLoaded', () => {
             modalEl.classList.remove('active');
         }
     });
-});
+    // ---------------------------------------------------------
+    // 5. Carousel Controls
+    // ---------------------------------------------------------
+    const navPrevCarousel = document.querySelector('.carousel-nav-btn.prev');
+    const navNextCarousel = document.querySelector('.carousel-nav-btn.next');
+    const productCarouselTrack = document.querySelector('.product-grid.data-carousel');
 
-/* ---------------------------------------------------------
-   5. Hero Background Shader (Three.js Silk Effect)
-   --------------------------------------------------------- */
-document.addEventListener('DOMContentLoaded', () => {
-    const container = document.getElementById('canvas-container');
-    if (!container) return;
+    if (navPrevCarousel && navNextCarousel && productCarouselTrack) {
+        navNextCarousel.addEventListener('click', () => {
+            const cardWidth = productCarouselTrack.querySelector('.product-card').offsetWidth;
+            const gap = parseFloat(getComputedStyle(productCarouselTrack).gap) || 0;
+            productCarouselTrack.scrollBy({ left: cardWidth + gap, behavior: 'smooth' });
+        });
 
-    // Check if THREE is loaded
-    if (typeof THREE === 'undefined') {
-        console.warn('Three.js not loaded');
-        return;
+        navPrevCarousel.addEventListener('click', () => {
+            const cardWidth = productCarouselTrack.querySelector('.product-card').offsetWidth;
+            const gap = parseFloat(getComputedStyle(productCarouselTrack).gap) || 0;
+            productCarouselTrack.scrollBy({ left: -(cardWidth + gap), behavior: 'smooth' });
+        });
+
+        // ---------------------------------------------------------
+        // 6. Faded Peeking Cards (Intersection Observer)
+        // ---------------------------------------------------------
+        const carouselCards = productCarouselTrack.querySelectorAll('.product-card');
+        const focusObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('focused');
+                } else {
+                    entry.target.classList.remove('focused');
+                }
+            });
+        }, {
+            root: productCarouselTrack,
+            rootMargin: '0px -30% 0px -30%', // Only focuses elements crossing the exact center
+            threshold: 0.4
+        });
+
+        carouselCards.forEach(card => focusObserver.observe(card));
     }
-
-    // SCENE SETUP
-    const scene = new THREE.Scene();
-    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
-    const renderer = new THREE.WebGLRenderer({
-        alpha: true,
-        antialias: true
-    });
-
-    // Resize handler
-    function resize() {
-        const width = container.offsetWidth;
-        const height = container.offsetHeight;
-        renderer.setSize(width, height);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
-        if (material) {
-            material.uniforms.uResolution.value.set(width, height);
-        }
-    }
-
-    container.appendChild(renderer.domElement);
-
-    // SHADERS
-    const vertexShader = `
-        varying vec2 vUv;
-        void main() {
-            vUv = uv;
-            gl_Position = vec4(position, 1.0);
-        }
-    `;
-
-    const fragmentShader = `
-        varying vec2 vUv;
-        uniform float uTime;
-        uniform vec3  uColor;
-        uniform float uSpeed;
-        uniform float uScale;
-        uniform float uRotation;
-        uniform float uNoiseIntensity;
-        uniform vec2  uResolution;
-
-        const float e = 2.71828182845904523536;
-
-        float noise(vec2 texCoord) {
-            float G = e;
-            vec2  r = (G * sin(G * texCoord));
-            return fract(r.x * r.y * (1.0 + texCoord.x));
-        }
-
-        vec2 rotateUvs(vec2 uv, float angle) {
-            float c = cos(angle);
-            float s = sin(angle);
-            mat2  rot = mat2(c, -s, s, c);
-            return rot * uv;
-        }
-
-        void main() {
-            vec2 uv = vUv;
-            // Fix aspect ratio
-            float aspect = uResolution.x / uResolution.y;
-            uv.x *= aspect;
-
-            float rnd        = noise(gl_FragCoord.xy);
-            vec2  rotatedUv  = rotateUvs(uv * uScale, uRotation);
-            vec2  tex        = rotatedUv;
-            float tOffset    = uSpeed * uTime;
-
-            tex.y += 0.05 * sin(4.0 * tex.x - tOffset);
-
-            float pattern = 0.5 +
-                            0.5 * sin(5.0 * (tex.x + tex.y +
-                                            cos(3.0 * tex.x + 5.0 * tex.y) +
-                                            0.02 * tOffset) +
-                                    sin(15.0 * (tex.x + tex.y - 0.1 * tOffset)));
-
-            vec3 color = uColor * pattern;
-            
-            // Mix with white to keep it subtle/background-y
-            color = mix(vec3(1.0), color, 0.1); // Lighter, more elegant tint
-            
-            /* Add some noise */
-            color -= rnd / 50.0 * uNoiseIntensity; // Less noise
-
-            gl_FragColor = vec4(color, 1.0);
-        }
-    `;
-
-    // Hex to RGB Helper
-    function hexToRGB(hex) {
-        hex = hex.replace('#', '');
-        return new THREE.Vector3(
-            parseInt(hex.slice(0, 2), 16) / 255,
-            parseInt(hex.slice(2, 4), 16) / 255,
-            parseInt(hex.slice(4, 6), 16) / 255
-        );
-    }
-
-    // UNIFORMS & MATERIAL
-    // Brand Green: Deep Forest (Secondary)
-    const brandColor = hexToRGB('1F5E4A');
-
-    const uniforms = {
-        uTime: { value: 0 },
-        uColor: { value: brandColor },
-        uSpeed: { value: 0.15 }, // Slightly slower
-        uScale: { value: 1.0 },
-        uRotation: { value: 0 },
-        uNoiseIntensity: { value: 0.05 }, // Smoother silk
-        uResolution: { value: new THREE.Vector2(container.offsetWidth, container.offsetHeight) }
-    };
-
-    const geometry = new THREE.PlaneGeometry(2, 2);
-    const material = new THREE.ShaderMaterial({
-        uniforms: uniforms,
-        vertexShader: vertexShader,
-        fragmentShader: fragmentShader,
-        transparent: true
-    });
-
-    const mesh = new THREE.Mesh(geometry, material);
-    scene.add(mesh);
-
-    // ANIMATION LOOP
-    const clock = new THREE.Clock();
-
-    function animate() {
-        requestAnimationFrame(animate);
-        uniforms.uTime.value = clock.getElapsedTime();
-        renderer.render(scene, camera);
-    }
-
-    animate();
-
-    // HANDLE RESIZE
-    window.addEventListener('resize', () => {
-        resize();
-    });
-
-
-    // Trigger initial resize
-    resize();
 });
