@@ -461,4 +461,37 @@ document.addEventListener('DOMContentLoaded', () => {
             feedbackForm.reset();
         });
     }
+
+    // ---------------------------------------------------------
+    // 8. Carousel Scroll Dots (Mobile)
+    // ---------------------------------------------------------
+    const dotsContainer = document.querySelector('.carousel-dots');
+    if (dotsContainer && productCarouselTrack) {
+        const cards = productCarouselTrack.querySelectorAll('.product-card');
+
+        // Generate dots
+        cards.forEach((_, i) => {
+            const dot = document.createElement('span');
+            dot.classList.add('dot');
+            if (i === 0) dot.classList.add('active');
+            dot.addEventListener('click', () => {
+                cards[i].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+            });
+            dotsContainer.appendChild(dot);
+        });
+
+        const dots = dotsContainer.querySelectorAll('.dot');
+
+        // Update active dot on scroll
+        productCarouselTrack.addEventListener('scroll', () => {
+            const scrollLeft = productCarouselTrack.scrollLeft;
+            const cardWidth = cards[0].offsetWidth;
+            const gap = parseFloat(getComputedStyle(productCarouselTrack).gap) || 0;
+            const activeIndex = Math.round(scrollLeft / (cardWidth + gap));
+
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === activeIndex);
+            });
+        });
+    }
 });
