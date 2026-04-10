@@ -327,8 +327,32 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentBackImg = '';
     let isShowingFront = true;
 
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let isSwiping = false;
+
     products.forEach(card => {
-        card.addEventListener('click', () => {
+        card.addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+            isSwiping = false;
+        }, { passive: true });
+
+        card.addEventListener('touchmove', (e) => {
+            const dx = Math.abs(e.touches[0].clientX - touchStartX);
+            const dy = Math.abs(e.touches[0].clientY - touchStartY);
+            if (dx > 10 || dy > 10) {
+                isSwiping = true;
+            }
+        }, { passive: true });
+
+        card.addEventListener('click', (e) => {
+            if (isSwiping) {
+                e.preventDefault();
+                isSwiping = false;
+                return;
+            }
+
             const title = card.querySelector('h3').innerText;
             const desc = card.querySelector('.product-overlay p').innerText;
             const container = card.querySelector('.product-image-container');
@@ -359,7 +383,6 @@ document.addEventListener('DOMContentLoaded', () => {
             modalImg.style.backgroundRepeat = 'no-repeat';
             modalImg.style.backgroundPosition = 'center';
 
-            // Hide next/prev buttons if no back image is effectively different
             if (currentBackImg === currentFrontImg) {
                 nextBtn.style.display = 'none';
                 prevBtn.style.display = 'none';
