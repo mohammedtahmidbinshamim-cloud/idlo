@@ -441,21 +441,28 @@ document.addEventListener('DOMContentLoaded', () => {
         // 6. Faded Peeking Cards (Intersection Observer)
         // ---------------------------------------------------------
         const carouselCards = productCarouselTrack.querySelectorAll('.product-card');
-        const focusObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('focused');
-                } else {
-                    entry.target.classList.remove('focused');
-                }
-            });
-        }, {
-            root: productCarouselTrack,
-            rootMargin: '0px -30% 0px -30%', // Only focuses elements crossing the exact center
-            threshold: 0.4
-        });
 
-        carouselCards.forEach(card => focusObserver.observe(card));
+        // Only run focus observer on desktop - causes vibration on mobile
+        if (window.innerWidth > 768) {
+            const focusObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('focused');
+                    } else {
+                        entry.target.classList.remove('focused');
+                    }
+                });
+            }, {
+                root: productCarouselTrack,
+                rootMargin: '0px -30% 0px -30%',
+                threshold: 0.4
+            });
+
+            carouselCards.forEach(card => focusObserver.observe(card));
+        } else {
+            // On mobile, all cards are fully visible
+            carouselCards.forEach(card => card.classList.add('focused'));
+        }
     }
 
     // ---------------------------------------------------------
