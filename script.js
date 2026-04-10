@@ -496,32 +496,67 @@ document.addEventListener('DOMContentLoaded', () => {
     // 8. Carousel Scroll Dots (Mobile)
     // ---------------------------------------------------------
     const dotsContainer = document.querySelector('.carousel-dots');
-    if (dotsContainer && productCarouselTrack) {
-        const cards = productCarouselTrack.querySelectorAll('.product-card');
 
-        // Generate dots
-        cards.forEach((_, i) => {
+    function buildDots() {
+        if (!dotsContainer || !productCarouselTrack) return;
+
+        // Clear existing dots
+        dotsContainer.innerHTML = '';
+
+        // Only count visible cards
+        const visibleCards = [...productCarouselTrack.querySelectorAll('.product-card')].filter(
+            card => card.style.display !== 'none'
+        );
+
+        if (visibleCards.length === 0) return;
+
+        visibleCards.forEach((card, i) => {
             const dot = document.createElement('span');
             dot.classList.add('dot');
             if (i === 0) dot.classList.add('active');
             dot.addEventListener('click', () => {
-                cards[i].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                card.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
             });
             dotsContainer.appendChild(dot);
         });
 
-        const dots = dotsContainer.querySelectorAll('.dot');
+        // Scroll tracking
+        const onScroll = () => {
+            const dots = dotsContainer.querySelectorAll('.dot');
+            const currentVisible = [...productCarouselTrack.querySelectorAll('.product-card')].filter(
+                c => c.style.display !== 'none'
+            );
+            if (currentVisible.length === 0) return;
 
-        // Update active dot on scroll
-        productCarouselTrack.addEventListener('scroll', () => {
             const scrollLeft = productCarouselTrack.scrollLeft;
-            const cardWidth = cards[0].offsetWidth;
+            const cardWidth = currentVisible[0].offsetWidth;
             const gap = parseFloat(getComputedStyle(productCarouselTrack).gap) || 0;
             const activeIndex = Math.round(scrollLeft / (cardWidth + gap));
 
             dots.forEach((dot, i) => {
                 dot.classList.toggle('active', i === activeIndex);
             });
-        });
+        };
+
+        productCarouselTrack.removeEventListener('scroll', productCarouselTrack._dotScrollHandler);
+        productCarouselTrack._dotScrollHandler = onScroll;
+        productCarouselTrack.addEventListener('scroll', onScroll);
     }
+
+    // Build dots initially
+    buildDots();
+
+    // Rebuild dots when category changes
+    categoryBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Wait for filter animation to finish
+            setTimeout(() => {
+                // Reset scroll position
+                if (productCarouselTrack) {
+                    productCarouselTrack.scrollTo({ left: 0, behavior: 'smooth' });
+                }
+                buildDots();
+            }, 350);
+        });
+    });
 });
