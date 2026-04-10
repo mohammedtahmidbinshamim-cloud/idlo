@@ -1483,8 +1483,26 @@ a {
   }
 
   .product-card:hover {
-    transform: translateY(-5px);
-    /* Reduce hover movement on touch */
+    transform: none;
+    box-shadow: none;
+    border-color: var(--color-border);
+  }
+
+  .product-card:hover .product-image {
+    transform: none;
+    filter: drop-shadow(0 20px 25px rgba(0, 30, 20, 0.25));
+  }
+
+  .product-card:hover .product-overlay {
+    opacity: 0;
+  }
+
+  .product-card:hover .product-overlay p {
+    transform: translateY(20px);
+  }
+
+  .product-card.focused:hover {
+    transform: scale(1) !important;
   }
 
   /* Trust Section */
