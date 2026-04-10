@@ -434,4 +434,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
         carouselCards.forEach(card => focusObserver.observe(card));
     }
+
+    // ---------------------------------------------------------
+    // 7. Feedback Form Intercept (Open Gmail Compose)
+    // ---------------------------------------------------------
+    const feedbackForm = document.querySelector('.feedback-form');
+    if (feedbackForm) {
+        feedbackForm.addEventListener('submit', (e) => {
+            e.preventDefault(); // Stop standard mailto behavior
+            
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const feedback = document.getElementById('feedback').value;
+            
+            const subject = encodeURIComponent(`Idlo Fresh Feedback from ${name}`);
+            const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nPhone: ${phone}\n\nFeedback:\n${feedback}`);
+            
+            // Gmail Compose URL format
+            const gmailLink = `https://mail.google.com/mail/?view=cm&fs=1&to=idlofresh@gmail.com&su=${subject}&body=${body}`;
+            
+            // Open Gmail specifically in a new tab
+            window.open(gmailLink, '_blank');
+            
+            // Optionally clear the form after sending
+            feedbackForm.reset();
+        });
+    }
 });
