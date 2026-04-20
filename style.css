@@ -192,7 +192,7 @@ a {
   top: 0;
   left: 0;
   width: 100%;
-  padding: var(--space-md) var(--space-lg);
+  padding: 5px var(--space-lg);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -204,10 +204,10 @@ a {
 .header::before {
   content: '';
   position: absolute;
-  top: 60px;
+  top: 10px;
   left: 0;
-  width: 250px;
-  height: calc(100% - 120px);
+  width: 270px;
+  height: calc(100% - 20px);
   background: #FFFFFF;
   z-index: -1;
   transition: all 0.4s ease;
@@ -215,7 +215,7 @@ a {
 }
 
 .header.scrolled {
-  padding: var(--space-sm) var(--space-lg);
+  padding: 0px var(--space-lg);
   background: transparent;
 }
 
@@ -253,7 +253,7 @@ a {
   object-fit: contain;
   z-index: 10;
   filter: none;
-  transform: scale(1.6);
+  transform: scale(2.0);
   /* simple */
 }
 
@@ -894,10 +894,35 @@ a {
 }
 
 
+.quality-trust-section {
+  padding: var(--space-lg);
+  background: var(--color-text);
+  color: var(--color-bg);
+  position: relative;
+}
+
+.quality-trust-section .section-header h2 {
+  color: var(--color-bg);
+}
+
+.quality-trust-container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.philosophy-intro {
+  max-width: 1000px;
+  margin: 0 auto var(--space-md) auto;
+  text-align: center;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.85);
+}
+
 .trust-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: var(--space-md);
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-sm);
   max-width: 1400px;
   margin: 0 auto;
   position: relative;
@@ -905,50 +930,49 @@ a {
 }
 
 .trust-card {
-  padding: var(--space-lg) var(--space-md);
-  background: var(--color-white);
-  border: 1px solid transparent;
-  border-radius: 24px;
+  padding: var(--space-sm);
+  background: transparent;
+  border: none;
   text-align: center;
   transition: all var(--transition-fast);
-  box-shadow: var(--shadow-sm);
 }
 
 .trust-card:hover {
-  border-color: var(--color-accent);
   transform: translateY(-5px);
-  box-shadow: var(--shadow-md);
 }
 
 .trust-card .icon {
-  font-size: 3rem;
-  margin-bottom: var(--space-md);
-  color: var(--color-accent);
-  background: var(--color-accent-light);
-  width: 100px;
-  height: 100px;
-  line-height: 100px;
+  font-size: 2rem;
+  margin-bottom: 12px;
+  color: var(--color-bg);
+  background: rgba(255, 255, 255, 0.1);
+  width: 65px;
+  height: 65px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border-radius: 50%;
-  margin: 0 auto 24px auto;
-  transition: transform var(--transition-bounce);
+  margin: 0 auto 16px auto;
+  transition: transform var(--transition-bounce), background 0.3s;
 }
 
 .trust-card:hover .icon {
   transform: rotate(10deg) scale(1.1);
   background: var(--color-accent);
-  color: var(--color-white);
-}
-
-.trust-card h3 {
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
   color: var(--color-text);
 }
 
+.trust-card h3 {
+  font-size: 1.15rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: var(--color-bg);
+  letter-spacing: 0.5px;
+}
+
 .trust-card p {
-  font-size: 1rem;
-  line-height: 1.6;
+  font-size: 0.9rem;
+  line-height: 1.5;
   color: var(--color-text-muted);
 }
 
@@ -1046,7 +1070,7 @@ a {
 
 .footer {
   position: relative;
-  padding: 20px var(--space-lg) 15px var(--space-lg);
+  padding: 15px var(--space-lg) 10px var(--space-lg);
   background: var(--color-text);
   color: var(--color-bg);
   backdrop-filter: none;
@@ -1066,10 +1090,10 @@ a {
 
 .footer-logo-shape {
   position: absolute;
-  top: 60px;
+  top: 45px;
   left: 0;
-  width: 250px;
-  height: calc(100% - 120px);
+  width: 270px;
+  height: calc(100% - 90px);
   background: #FFFFFF;
   z-index: 0;
   border-radius: 0 40px 40px 0;
@@ -1226,11 +1250,15 @@ a {
     --space-xl: 80px;
   }
 
+  .trust-grid {
+    grid-template-columns: 1fr;
+  }
+
   /* Footer reordering for mobile */
   .footer-content {
     flex-direction: column;
     align-items: center;
-    gap: 20px;
+    gap: 15px;
   }
 
   .footer-address {
@@ -1242,7 +1270,7 @@ a {
     text-align: center;
     align-items: center;
   }
-  
+
   .footer-nav-title {
     margin-top: 10px;
   }
@@ -1253,7 +1281,7 @@ a {
 
   /* Header - Keep Row Layout */
   .header {
-    padding: 45px 30px;
+    padding: 5px 30px;
     flex-direction: row;
     position: fixed;
     /* Must be fixed for sticky hide/show */
@@ -1265,8 +1293,15 @@ a {
   }
 
   .header::before {
-    width: 130px;
+    top: 15px;
+    width: 150px;
+    height: calc(100% - 30px);
     border-radius: 0 25px 25px 0;
+  }
+
+  .footer-logo-shape {
+    top: 55px;
+    height: calc(100% - 110px);
   }
 
   /* Ensure solid background when menu is open */
@@ -1284,7 +1319,7 @@ a {
   }
 
   .header.scrolled {
-    padding: 15px 25px;
+    padding: 0px 25px;
   }
 
   .header.scrolled::before {
@@ -1300,8 +1335,8 @@ a {
   }
 
   .logo-img {
-    height: 50px;
-    transform: scale(2.0);
+    height: 80px;
+    transform: scale(2.5);
     transform-origin: left center;
     margin-left: -5px;
   }
@@ -1570,6 +1605,7 @@ a {
   .hero-title {
     font-size: 2.5rem;
   }
+
   .logo-img {
     height: 90px;
     transform: scale(1.3);

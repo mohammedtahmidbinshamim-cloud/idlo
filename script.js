@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ---------------------------------------------------------
     const header = document.querySelector('.header');
     let lastScrollY = window.scrollY;
+    header.addEventListener('mouseenter', () => clearTimeout(window.hideHeaderTimeout));
 
     let ticking = false;
     window.addEventListener('scroll', () => {
@@ -29,6 +30,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     header.classList.remove('header-hidden');
                 }
 
+                clearTimeout(window.hideHeaderTimeout);
+                if (currentScrollY > 100) {
+                    window.hideHeaderTimeout = setTimeout(() => {
+                        if (!header.classList.contains('nav-active')) {
+                            header.classList.add('header-hidden');
+                        }
+                    }, 3000);
+                }
                 lastScrollY = currentScrollY;
                 ticking = false;
             });
