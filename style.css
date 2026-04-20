@@ -204,10 +204,10 @@ a {
 .header::before {
   content: '';
   position: absolute;
-  top: 40px;
+  top: 60px;
   left: 0;
   width: 250px;
-  height: calc(100% - 80px);
+  height: calc(100% - 120px);
   background: #FFFFFF;
   z-index: -1;
   transition: all 0.4s ease;
@@ -577,7 +577,7 @@ a {
   content: '';
   position: absolute;
   inset: 0;
-  background: rgba(31, 94, 74, 0.85);
+  background: rgba(31, 94, 74, 0.6);
   /* Premium dark green overlay to match brand */
   z-index: 1;
 }
@@ -1066,10 +1066,10 @@ a {
 
 .footer-logo-shape {
   position: absolute;
-  top: 40px;
+  top: 60px;
   left: 0;
   width: 250px;
-  height: calc(100% - 80px);
+  height: calc(100% - 120px);
   background: #FFFFFF;
   z-index: 0;
   border-radius: 0 40px 40px 0;
