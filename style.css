@@ -569,22 +569,13 @@ a {
 .our-story {
   position: relative;
   padding: var(--space-xl) var(--space-lg);
-  background: url('assets/story2.jpeg') center/cover no-repeat;
-  text-align: center;
-}
-
-.our-story::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: rgba(31, 94, 74, 0.6);
-  /* Premium dark green overlay to match brand */
-  z-index: 1;
+  background: url('assets/idlibg.png') center/cover no-repeat;
+  text-align: left;
 }
 
 .our-story-container {
-  max-width: 900px;
-  margin: 0 auto;
+  max-width: 600px;
+  margin: 0;
   position: relative;
   z-index: 2;
 }
@@ -593,14 +584,14 @@ a {
   font-size: 3.5rem;
   margin-bottom: var(--space-md);
   letter-spacing: -0.03em;
-  color: var(--color-white);
+  color: var(--color-text);
   font-family: var(--font-display);
 }
 
 .our-story .story-content p {
   font-size: 1.15rem;
   line-height: 1.8;
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--color-text);
   margin-bottom: var(--space-md);
   font-family: var(--font-body);
 }
@@ -611,7 +602,21 @@ a {
 
 @media (max-width: 768px) {
   .our-story {
-    background-position: center center;
+    background-position: 70% center;
+    text-align: center;
+  }
+
+  .our-story::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.6);
+    z-index: 1;
+  }
+
+  .our-story-container {
+    margin: 0 auto;
+    max-width: 100%;
   }
 
   .our-story h2 {
