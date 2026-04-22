@@ -1340,10 +1340,10 @@ a {
   }
 
   .logo-img {
-    height: 80px;
-    transform: scale(2.5);
+    height: 95px;
+    transform: scale(2.9);
     transform-origin: left center;
-    margin-left: -5px;
+    margin-left: -60px;
   }
 
   /* New Menu Toggle Button */
@@ -1583,6 +1583,12 @@ a {
     border-radius: 0 25px 25px 0;
   }
 
+  .footer-logo-header-clone .logo-img {
+    height: 85px;
+    transform: scale(2.4);
+    margin-left: -42px;
+  }
+
   .footer-content {
     flex-direction: column;
     gap: var(--space-lg);
@@ -1612,8 +1618,14 @@ a {
   }
 
   .logo-img {
+    height: 100px;
+    transform: scale(1.9);
+    left: -65px;
+  }
+
+  .footer-logo-header-clone .logo-img {
     height: 90px;
-    transform: scale(1.3);
-    left: -55px;
+    transform: scale(1.7);
+    left: -62px;
   }
 }

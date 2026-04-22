@@ -1,3 +1,9 @@
+// Ensure the page always loads at the top (Hero Section)
+if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+}
+window.scrollTo(0, 0);
+
 document.addEventListener('DOMContentLoaded', () => {
     // ---------------------------------------------------------
     // 1. Smooth Scrolling & Header Interaction
@@ -332,9 +338,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalDesc = document.querySelector('.modal-desc');
     const modalImg = document.querySelector('.modal-image');
 
-    let currentFrontImg = '';
-    let currentBackImg = '';
-    let isShowingFront = true;
+    let modalImages = [];
+    let currentImageIndex = 0;
 
     let touchStartX = 0;
     let touchStartY = 0;
@@ -369,10 +374,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const bg = container.style.backgroundColor;
 
-            // Clean up the URL string to get just the path
-            currentFrontImg = imgDiv.style.backgroundImage;
+            const currentFrontImg = imgDiv.style.backgroundImage;
             const backImgRaw = card.getAttribute('data-back-image');
-            currentBackImg = backImgRaw ? `url('${backImgRaw}')` : currentFrontImg; // Fallback to front if missing
+            const galleryRaw = card.getAttribute('data-gallery-images');
+
+            modalImages = [currentFrontImg];
+            if (galleryRaw) {
+                const extraImages = galleryRaw.split(',').map(src => `url('${src.trim()}')`);
+                modalImages.push(...extraImages);
+            } else if (backImgRaw) {
+                modalImages.push(`url('${backImgRaw}')`);
+            }
 
             const customDesc = card.getAttribute('data-full-desc');
 
@@ -385,14 +397,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Apply styles to modal image
             modalImg.style.backgroundColor = bg;
-            modalImg.style.backgroundImage = currentFrontImg; // Start with front
-            isShowingFront = true;
+            modalImg.style.backgroundImage = modalImages[0]; 
+            currentImageIndex = 0;
 
             modalImg.style.backgroundSize = 'contain';
             modalImg.style.backgroundRepeat = 'no-repeat';
             modalImg.style.backgroundPosition = 'center';
 
-            if (currentBackImg === currentFrontImg) {
+            if (modalImages.length <= 1) {
                 nextBtn.style.display = 'none';
                 prevBtn.style.display = 'none';
             } else {
@@ -404,18 +416,19 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    const toggleImage = () => {
-        if (isShowingFront) {
-            modalImg.style.backgroundImage = currentBackImg;
-            isShowingFront = false;
-        } else {
-            modalImg.style.backgroundImage = currentFrontImg;
-            isShowingFront = true;
+    nextBtn.addEventListener('click', () => {
+        if (modalImages.length > 1) {
+            currentImageIndex = (currentImageIndex + 1) % modalImages.length;
+            modalImg.style.backgroundImage = modalImages[currentImageIndex];
         }
-    };
+    });
 
-    nextBtn.addEventListener('click', toggleImage);
-    prevBtn.addEventListener('click', toggleImage);
+    prevBtn.addEventListener('click', () => {
+        if (modalImages.length > 1) {
+            currentImageIndex = (currentImageIndex - 1 + modalImages.length) % modalImages.length;
+            modalImg.style.backgroundImage = modalImages[currentImageIndex];
+        }
+    });
 
     closeBtn.addEventListener('click', () => {
         modalEl.classList.remove('active');
