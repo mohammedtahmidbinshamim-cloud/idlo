@@ -466,8 +466,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // ---------------------------------------------------------
         const carouselCards = productCarouselTrack.querySelectorAll('.product-card');
 
-        // Only run focus observer on desktop - causes vibration on mobile
-        if (window.innerWidth > 768) {
+        // Only run focus observer on non-touch devices - causes vibration/stuttering on touch/mobile
+        const isTouchDevice = window.matchMedia("(pointer: coarse)").matches;
+        
+        if (!isTouchDevice && window.innerWidth > 1024) {
             const focusObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -481,12 +483,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 rootMargin: '0px -30% 0px -30%',
                 threshold: 0.4
             });
-
             carouselCards.forEach(card => focusObserver.observe(card));
         } else {
-            // On mobile, all cards are fully visible
+            // On touch devices or small screens, all cards are fully visible to avoid stuttering
             carouselCards.forEach(card => card.classList.add('focused'));
         }
+
     }
 
     // ---------------------------------------------------------

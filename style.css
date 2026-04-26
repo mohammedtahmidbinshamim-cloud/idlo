@@ -1522,9 +1522,9 @@ a {
   }
 
   .product-card:hover {
-    transform: none;
-    box-shadow: none;
-    border-color: var(--color-border);
+    transform: none !important;
+    box-shadow: none !important;
+    border-color: var(--color-border) !important;
   }
 
   .product-card:hover .product-image-img {
@@ -1628,3 +1628,29 @@ a {
     left: -62px;
   }
 }
+
+/* Disable Hover Effects on all Touch Devices to prevent stuttering */
+@media (pointer: coarse) {
+  .product-card:hover {
+    transform: none !important;
+    box-shadow: var(--shadow-md) !important;
+    border-color: var(--color-border) !important;
+  }
+  
+  .product-card:hover .product-image-img {
+    transform: none !important;
+  }
+  
+  .trust-card:hover {
+    transform: none !important;
+  }
+  
+  .trust-card:hover .icon {
+    transform: none !important;
+  }
+  
+  .footer-social a:hover {
+    transform: none !important;
+  }
+}
+
