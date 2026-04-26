@@ -370,11 +370,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const title = card.querySelector('h3').innerText;
             const desc = card.querySelector('.product-overlay p').innerText;
             const container = card.querySelector('.product-image-container');
-            const imgDiv = card.querySelector('.product-image');
+            const imgEl = card.querySelector('.product-image-img');
+
 
             const bg = container.style.backgroundColor;
+            
+            const currentFrontImg = `url('${imgEl.src}')`;
 
-            const currentFrontImg = imgDiv.style.backgroundImage;
             const backImgRaw = card.getAttribute('data-back-image');
             const galleryRaw = card.getAttribute('data-gallery-images');
 
