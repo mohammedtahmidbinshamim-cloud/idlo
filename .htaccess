@@ -1,0 +1,18 @@
+# Enable URL Rewriting
+RewriteEngine On
+
+# Redirect all HTTP requests to HTTPS
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Prevent browsers from sniffing MIME types (Security Header)
+Header set X-Content-Type-Options "nosniff"
+
+# Enable XSS protection in older browsers
+Header set X-XSS-Protection "1; mode=block"
+
+# Prevent clickjacking attacks
+Header set X-Frame-Options "SAMEORIGIN"
+
+# Enforce HTTPS on the client side for 1 year (HSTS)
+Header set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
